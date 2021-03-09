@@ -1,0 +1,168 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "FAMB": {
+      "projectType": "library",
+      "root": "projects/famb",
+      "sourceRoot": "projects/famb/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/famb/tsconfig.lib.json",
+            "project": "projects/famb/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/famb/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/famb/src/test.ts",
+            "tsConfig": "projects/famb/tsconfig.spec.json",
+            "karmaConfig": "projects/famb/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/famb/tsconfig.lib.json",
+              "projects/famb/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "famb-test": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/famb-test",
+      "sourceRoot": "projects/famb-test/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/famb-test",
+            "index": "projects/famb-test/src/index.html",
+            "main": "projects/famb-test/src/main.ts",
+            "polyfills": "projects/famb-test/src/polyfills.ts",
+            "tsConfig": "projects/famb-test/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/famb-test/src/favicon.ico",
+              "projects/famb-test/src/assets"
+            ],
+            "styles": [
+              "projects/famb-test/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/famb-test/src/environments/environment.ts",
+                  "with": "projects/famb-test/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "famb-test:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "famb-test:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "famb-test:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/famb-test/src/test.ts",
+            "polyfills": "projects/famb-test/src/polyfills.ts",
+            "tsConfig": "projects/famb-test/tsconfig.spec.json",
+            "karmaConfig": "projects/famb-test/karma.conf.js",
+            "assets": [
+              "projects/famb-test/src/favicon.ico",
+              "projects/famb-test/src/assets"
+            ],
+            "styles": [
+              "projects/famb-test/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/famb-test/tsconfig.app.json",
+              "projects/famb-test/tsconfig.spec.json",
+              "projects/famb-test/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/famb-test/e2e/protractor.conf.js",
+            "devServerTarget": "famb-test:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "famb-test:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "FAMB"
+}

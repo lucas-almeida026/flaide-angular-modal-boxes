@@ -1,0 +1,51 @@
+@import './../famb-common-styles.scss';
+
+#famb-alert-bg{
+  @include flexColumn(center, center);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0);
+  display: none;
+}
+
+#famb-alert-box{
+  @include flexColumn(center, space-around);
+  width: 90%;
+  max-width: 400px;
+  min-height: 150px;
+  background-color: white;
+  border-radius: 6px;
+  padding: 8px;
+  #famb-alert-title{
+    width: 100%;
+    text-align: center;
+    padding: 12px 0;
+    color: #181818;
+    font-size: 1.5rem;
+  }
+  #famb-alert-paragraph{
+    @include flexColumn(flex-start, center);
+    width: 80%;
+    min-height: 40px;
+    text-align: justify;
+    color: #3a3a3a;
+    font-size: 1.1rem;
+  }
+  #famb-alert-buttons{
+    @include flexRow(flex-end, center);
+    width: 100%;
+    padding: 8px;
+    #famb-alert-mainBtn{
+      width: 100px;
+      padding: 12px 0;
+      border-radius: 6px;
+      background-color: #0069ff;
+      color: white;
+      text-align: center;
+      margin: 4px 12px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+  }
+}
