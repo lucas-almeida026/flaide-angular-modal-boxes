@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FAMBAlertBoxController } from 'famb';
 
-const test = new FAMBAlertBoxController()
+const alert = new FAMBAlertBoxController()
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   }
 
   showAlert(): void {
-    test.config({})
-    test.show()
+    alert.config({})
+    alert.show('Teste título', 'teste description').on('ok', () => console.log('ok'))
   }
 }
