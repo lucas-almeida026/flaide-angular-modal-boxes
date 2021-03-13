@@ -1,6 +1,15 @@
+import { fambButton, fambDescription, fambHoverButton, fambTitle, textAlign } from './famb-alert-styles.interface';
 import { EventListenerRecorder, EventListenerRecorderProtocol } from '../globalEventRecorder';
 import { Observer } from '../Observer';
 import { fambModalBoxConfigProtocol } from './../modal-box-config.interface';
+
+const useIntraDictionary = (obj: Object, intra: Object) => {
+  if(obj !== undefined){
+    Object.entries(obj).forEach(e => {
+      intra[e[0]](e[1])
+    })
+  }
+}
 
 export type alertEvents = 'hide' | 'close' | 'ok'
 
@@ -11,6 +20,54 @@ const dictionary = {
   backgroundColor: (value: string | null) => document.getElementById('famb-alert-box').style.backgroundColor = value || 'white',
   border: (value: string | null) => document.getElementById('famb-alert-box').style.border = value || 'none',
   borderRadius: (value: string | null) => document.getElementById('famb-alert-box').style.borderRadius = value || '6px',
+  title: (obj: fambTitle | null) => {
+    const intraDictionary = {
+      fontSize: (value: string | null) => document.getElementById('famb-alert-title').style.fontSize = value || '1.5rem',
+      color: (value: string | null) => document.getElementById('famb-alert-title').style.color = value || '#181818',
+      textAlign: (value: textAlign | null) => document.getElementById('famb-alert-title').style.textAlign = value || 'center',
+    }
+    useIntraDictionary(obj, intraDictionary)
+  },
+  description: (obj: fambDescription | null) => {
+    const intraDictionary = {
+      fontSize: (value: string | null) => document.getElementById('famb-alert-description').style.fontSize = value || '1.1rem',
+      color: (value: string | null) => document.getElementById('famb-alert-description').style.color = value || '#3a3a3a',
+      textAlign: (value: textAlign | 'justify' | null) => document.getElementById('famb-alert-description').style.textAlign = value || 'justify',
+      minHeight: (value: string | null) => document.getElementById('famb-alert-description').style.minHeight = value || '40px',
+    }
+    useIntraDictionary(obj, intraDictionary)
+  },
+  okButton: (obj: fambButton | null) => {
+    const intraDictionary = {
+      width: (value: string | null) => document.getElementById('famb-alert-mainBtn').style.width = value || '100px',
+      maxWidth: (value: string | null) => document.getElementById('famb-alert-mainBtn').style.maxWidth = value || '150px',
+      padding: (value: string | null) => document.getElementById('famb-alert-mainBtn').style.padding = value || '12px 0px',
+      fontSize: (value: string | null) => document.getElementById('famb-alert-mainBtn').style.fontSize = value || '1rem',
+      color: (value: string | null) => document.getElementById('famb-alert-mainBtn').style.color = value || 'white',
+      backgroundColor: (value: string | null) => document.getElementById('famb-alert-mainBtn').style.backgroundColor = value || '#0069ff',
+      border: (value: string | null) => document.getElementById('famb-alert-mainBtn').style.border = value || 'none',
+      borderRadius: (value: string | null) => document.getElementById('famb-alert-mainBtn').style.borderRadius = value || '6px',
+      opacity: (value: string | null) => document.getElementById('famb-alert-mainBtn').style.opacity = value || '.8',
+      hover: (obj: fambHoverButton | null) => {
+        const previous = {
+          color: document.getElementById('famb-alert-mainBtn').style.color,
+          backgroundColor: document.getElementById('famb-alert-mainBtn').style.backgroundColor,
+          opacity: document.getElementById('famb-alert-mainBtn').style.opacity,
+        }
+        document.getElementById('famb-alert-mainBtn').onmouseover = () => {
+          document.getElementById('famb-alert-mainBtn').style.color = obj?.color
+          document.getElementById('famb-alert-mainBtn').style.backgroundColor = obj?.backgroundColor
+          document.getElementById('famb-alert-mainBtn').style.opacity = obj?.opacity
+        }
+        document.getElementById('famb-alert-mainBtn').onmouseleave = () => {
+          document.getElementById('famb-alert-mainBtn').style.color = previous.color
+          document.getElementById('famb-alert-mainBtn').style.backgroundColor = previous.backgroundColor
+          document.getElementById('famb-alert-mainBtn').style.opacity = previous.opacity
+        }
+      }
+    }
+    useIntraDictionary(obj, intraDictionary)
+  }
 }
 
 const defaultConfigs: fambModalBoxConfigProtocol = {

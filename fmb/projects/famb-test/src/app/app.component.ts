@@ -15,7 +15,25 @@ export class AppComponent implements OnInit {
   }
 
   showAlert(): void {
-    alert.config({})
+    alert.config({
+      alertStyles: {
+        backgroundColor: 'purple',
+        title: {
+          color: 'blue'
+        },
+        description: {
+          color: 'yellow'
+        },
+        okButton: {
+          backgroundColor: 'red',
+          opacity: '.7',
+          hover: {
+            backgroundColor: 'blue',
+            opacity: '1'
+          }
+        }
+      }
+    })
     alert.show('Teste título', 'teste description').on('ok', () => console.log('ok'))
   }
 }
