@@ -1,6 +1,6 @@
+import { fambConfirmBoxConfigProtocol } from './../modal-box-config.interface';
 import { EventListenerRecorder, EventListenerRecorderProtocol } from '../globalEventRecorder';
-import { Observable } from '../Observer';
-import { fambModalBoxConfigProtocol } from './../modal-box-config.interface';
+import { Observable } from '../Observable';
 import { fambDescription, fambHoverButton, fambButton, fambTitle, textAlign } from '../modal-box-global-style.interface';
 
 const useIntraDictionary = (obj: Object, intra: Object) => {
@@ -101,24 +101,24 @@ const dictionary = {
   }
 }
 
-const defaultConfigs: fambModalBoxConfigProtocol = {
+const defaultConfigs: fambConfirmBoxConfigProtocol = {
   animationTime: 700,
   bgTransparencyRate: '.5',
-  hideOnClickBackground: true
+  hideOnClickBackground: false
 }
 
 export class FAMBConfirmBoxController {
-  private configs: fambModalBoxConfigProtocol
+  private configs: fambConfirmBoxConfigProtocol
   private observer: Observable = new Observable()
   private globalEventRecorder: EventListenerRecorderProtocol = new EventListenerRecorder()
 
-  config(_configs: fambModalBoxConfigProtocol): void {
+  config(_configs: fambConfirmBoxConfigProtocol): void {
     this.configs = Object.keys(_configs).length > 0 ? { ...defaultConfigs, ..._configs } : { ...defaultConfigs }    
     document.getElementById('famb-confirm-bg').style.transition = `${this.configs.animationTime || 600}ms ease`
     document.getElementById('famb-confirm-box').style.transition = `${this.configs.animationTime || 600}ms ease`
     if(this.configs.hideOnClickBackground || this.configs.hideOnClickBackground === undefined) document.getElementById('famb-confirm-bg').onclick = () => this.hide()
-    if(this.configs.alertStyles !== undefined){
-      Object.entries(this.configs.alertStyles).forEach(e => {
+    if(this.configs.confirmBoxStyles !== undefined){
+      Object.entries(this.configs.confirmBoxStyles).forEach(e => {
         dictionary[e[0]](e[1])
       })
     }
@@ -131,11 +131,17 @@ export class FAMBConfirmBoxController {
     document.getElementById('famb-confirm-bg').style.display = 'flex'
     if(!this.globalEventRecorder.hasEventListener('main', 'click')){
       this.globalEventRecorder.registerEventListener('main', 'click')
-      document.getElementById('famb-confirm-mainBtn').addEventListener('click', () => this.observer.emit('ok'))
+      document.getElementById('famb-confirm-mainBtn').addEventListener('click', () => {
+        this.observer.emit('ok')
+        this.hide()
+      })
     }
     if(!this.globalEventRecorder.hasEventListener('sec', 'click')){
       this.globalEventRecorder.registerEventListener('sec', 'click')
-      document.getElementById('famb-confirm-secBtn').addEventListener('click', () => this.observer.emit('cancel'))
+      document.getElementById('famb-confirm-secBtn').addEventListener('click', () => {
+        this.observer.emit('cancel')
+        this.hide()
+      })
     }
     document.getElementById('famb-confirm-mainBtn').innerText = buttons?.ok || 'OK'
     document.getElementById('famb-confirm-secBtn').innerText = buttons?.cancel || 'Cancel'

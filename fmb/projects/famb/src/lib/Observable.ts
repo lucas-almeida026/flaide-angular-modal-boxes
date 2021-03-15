@@ -1,7 +1,8 @@
+import { inputEvents } from './famb-input-box/famb-input-box.controller';
 import { confirmEvents } from './famb-confirm-box/famb-confirm-box.controller';
 import { alertEvents } from "./famb-alert-box/famb-alert-box.controller"
 
-type eventTypes = alertEvents | confirmEvents
+type eventTypes = alertEvents | confirmEvents | inputEvents
 
 export interface Observer {
   event: eventTypes,
@@ -10,7 +11,6 @@ export interface Observer {
 
 export class Observable {
   observables: Observer[] = []
-
 
   on(event: eventTypes , func: Function): void {
     if(this.observables.filter((e: Observer) => e.event === event).length === 0){

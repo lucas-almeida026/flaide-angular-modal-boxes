@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FAMBAlertBoxController, FAMBConfirmBoxController } from 'famb';
+import { FAMBAlertBoxController, FAMBConfirmBoxController, FAMBInputBoxController } from 'famb';
 
 const alert = new FAMBAlertBoxController()
 const confirm = new FAMBConfirmBoxController()
+const input = new FAMBInputBoxController()
 
 @Component({
   selector: 'app-root',
@@ -22,8 +23,14 @@ export class AppComponent implements OnInit {
 
   showConfirm(): void {
     confirm.config({})
-    const obsvb = confirm.show('Teste título', 'teste question')
-    obsvb.on('ok', () => console.log('ok'))
-    obsvb.on('cancel', () => console.log('cancel'))
+    const observable = confirm.show('Teste título', 'teste question')
+    observable.on('ok', () => console.log('ok'))
+    observable.on('cancel', () => console.log('cancel'))
+  }
+
+  showInput(): void {
+    input.config({})
+    const observable = input.show('asd', 'asd')
+    observable.on('send', (e) => console.log('input close', e))
   }
 }

@@ -1,6 +1,6 @@
+import { fambAlertBoxConfigProtocol } from './../modal-box-config.interface';
 import { EventListenerRecorder, EventListenerRecorderProtocol } from '../globalEventRecorder';
-import { Observable } from '../Observer';
-import { fambModalBoxConfigProtocol } from './../modal-box-config.interface';
+import { Observable } from '../Observable';
 import { fambDescription, fambHoverButton, fambButton, fambTitle, textAlign } from '../modal-box-global-style.interface';
 
 const useIntraDictionary = (obj: Object, intra: Object) => {
@@ -70,24 +70,24 @@ const dictionary = {
   }
 }
 
-const defaultConfigs: fambModalBoxConfigProtocol = {
+const defaultConfigs: fambAlertBoxConfigProtocol = {
   animationTime: 700,
   bgTransparencyRate: '.5',
   hideOnClickBackground: true
 }
 
 export class FAMBAlertBoxController {
-  private configs: fambModalBoxConfigProtocol
+  private configs: fambAlertBoxConfigProtocol
   private observer: Observable = new Observable()
   private globalEventRecorder: EventListenerRecorderProtocol = new EventListenerRecorder()
 
-  config(_configs: fambModalBoxConfigProtocol): void {
+  config(_configs: fambAlertBoxConfigProtocol): void {
     this.configs = Object.keys(_configs).length > 0 ? { ...defaultConfigs, ..._configs } : { ...defaultConfigs }
     document.getElementById('famb-alert-bg').style.transition = `${this.configs.animationTime || 600}ms ease`
     document.getElementById('famb-alert-box').style.transition = `${this.configs.animationTime || 600}ms ease`
     if(this.configs.hideOnClickBackground || this.configs.hideOnClickBackground === undefined) document.getElementById('famb-alert-bg').onclick = () => this.hide()
-    if(this.configs.alertStyles !== undefined){
-      Object.entries(this.configs.alertStyles).forEach(e => {
+    if(this.configs.alertBoxStyles !== undefined){
+      Object.entries(this.configs.alertBoxStyles).forEach(e => {
         dictionary[e[0]](e[1])
       })
     }
