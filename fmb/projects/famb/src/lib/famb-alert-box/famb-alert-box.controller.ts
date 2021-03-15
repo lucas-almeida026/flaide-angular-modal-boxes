@@ -1,7 +1,7 @@
-import { fambButton, fambDescription, fambHoverButton, fambTitle, textAlign } from './famb-alert-styles.interface';
 import { EventListenerRecorder, EventListenerRecorderProtocol } from '../globalEventRecorder';
-import { Observer } from '../Observer';
+import { Observable } from '../Observer';
 import { fambModalBoxConfigProtocol } from './../modal-box-config.interface';
+import { fambDescription, fambHoverButton, fambButton, fambTitle, textAlign } from '../modal-box-global-style.interface';
 
 const useIntraDictionary = (obj: Object, intra: Object) => {
   if(obj !== undefined){
@@ -78,11 +78,11 @@ const defaultConfigs: fambModalBoxConfigProtocol = {
 
 export class FAMBAlertBoxController {
   private configs: fambModalBoxConfigProtocol
-  private observer: Observer = new Observer()
+  private observer: Observable = new Observable()
   private globalEventRecorder: EventListenerRecorderProtocol = new EventListenerRecorder()
 
   config(_configs: fambModalBoxConfigProtocol): void {
-    this.configs = Object.keys(_configs).length > 0 ? { ..._configs, ...defaultConfigs } : { ...defaultConfigs }    
+    this.configs = Object.keys(_configs).length > 0 ? { ...defaultConfigs, ..._configs } : { ...defaultConfigs }
     document.getElementById('famb-alert-bg').style.transition = `${this.configs.animationTime || 600}ms ease`
     document.getElementById('famb-alert-box').style.transition = `${this.configs.animationTime || 600}ms ease`
     if(this.configs.hideOnClickBackground || this.configs.hideOnClickBackground === undefined) document.getElementById('famb-alert-bg').onclick = () => this.hide()
@@ -93,7 +93,7 @@ export class FAMBAlertBoxController {
     }
   }
 
-  show(title: string, description: string): Observer {
+  show(title: string, description: string, buttons?: {ok: string}): Observable {
     if(this.configs === undefined) throw new Error('you must config this alert box first, use <FAMBAlertBoxController>.config()')
     document.getElementById('famb-alert-title').innerText = title
     document.getElementById('famb-alert-description').innerText = description
@@ -102,6 +102,7 @@ export class FAMBAlertBoxController {
       this.globalEventRecorder.registerEventListener('id', 'click')
       document.getElementById('famb-alert-mainBtn').addEventListener('click', () => this.observer.emit('ok'))
     }
+    document.getElementById('famb-alert-mainBtn').innerText = buttons?.ok || 'OK'
     
     setTimeout(() => {
       document.getElementById('famb-alert-bg').style.zIndex = '1'

@@ -1,6 +1,6 @@
 import { fambDescription, fambButton, fambTitle } from "../modal-box-global-style.interface";
 
-export interface fambAlertStylesProtocol {
+export interface fambConfirmStylesProtocol {
   width?: string,
   maxWidth?: string,
   minHeight?: string,
@@ -8,6 +8,7 @@ export interface fambAlertStylesProtocol {
   border?: string,
   borderRadius?: string,
   title?: fambTitle,
-  description?: fambDescription,
+  question?: fambDescription,
   okButton?: fambButton
+  cancelButton?: fambButton
 }

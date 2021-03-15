@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FAMBAlertBoxController } from 'famb';
+import { FAMBAlertBoxController, FAMBConfirmBoxController } from 'famb';
 
 const alert = new FAMBAlertBoxController()
+const confirm = new FAMBConfirmBoxController()
 
 @Component({
   selector: 'app-root',
@@ -15,25 +16,14 @@ export class AppComponent implements OnInit {
   }
 
   showAlert(): void {
-    alert.config({
-      alertStyles: {
-        backgroundColor: 'purple',
-        title: {
-          color: 'blue'
-        },
-        description: {
-          color: 'yellow'
-        },
-        okButton: {
-          backgroundColor: 'red',
-          opacity: '.7',
-          hover: {
-            backgroundColor: 'blue',
-            opacity: '1'
-          }
-        }
-      }
-    })
-    alert.show('Teste título', 'teste description').on('ok', () => console.log('ok'))
+    alert.config({})
+    alert.show('Teste título 4', 'teste description').on('ok', () => console.log('ok'))
+  }
+
+  showConfirm(): void {
+    confirm.config({})
+    const obsvb = confirm.show('Teste título', 'teste question')
+    obsvb.on('ok', () => console.log('ok'))
+    obsvb.on('cancel', () => console.log('cancel'))
   }
 }

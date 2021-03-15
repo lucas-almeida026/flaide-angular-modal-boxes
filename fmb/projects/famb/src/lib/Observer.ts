@@ -1,30 +1,34 @@
+import { confirmEvents } from './famb-confirm-box/famb-confirm-box.controller';
 import { alertEvents } from "./famb-alert-box/famb-alert-box.controller"
 
-export interface Observable {
-  event: alertEvents,
+type eventTypes = alertEvents | confirmEvents
+
+export interface Observer {
+  event: eventTypes,
   method: Function
 }
 
-export class Observer {
-  observables: Observable[] = []
+export class Observable {
+  observables: Observer[] = []
 
-  on(event: alertEvents , func: Function): void {
-    if(this.observables.filter((e: Observable) => e.event === event).length === 0){
+
+  on(event: eventTypes , func: Function): void {
+    if(this.observables.filter((e: Observer) => e.event === event).length === 0){
       this.observables.push({event, method: func})
     }else{
-      this.observables.filter((e: Observable) => e.event === event)[0].method = func
+      this.observables.filter((e: Observer) => e.event === event)[0].method = func
     }   
   }
 
-  unsubscribe(event: alertEvents): void {
-    this.observables = this.observables.filter((e: Observable) => e.event !== event)
+  unsubscribe(event: eventTypes): void {
+    this.observables = this.observables.filter((e: Observer) => e.event !== event)
   }
 
-  emit(event: alertEvents): void {
-    this.observables.filter((e: Observable) => e.event === event)[0]?.method()
+  emit(event: eventTypes): void {
+    this.observables.filter((e: Observer) => e.event === event)[0]?.method()
   }
 
-  emitValue(event: alertEvents, value: any): void {
-    this.observables.filter((e: Observable) => e.event === event)[0]?.method(value)
+  emitValue(event: eventTypes, value: any): void {
+    this.observables.filter((e: Observer) => e.event === event)[0]?.method(value)
   }
 }
