@@ -96,6 +96,7 @@ export class FAMBInputBoxController {
   private globalEventRecorder: EventListenerRecorderProtocol = new EventListenerRecorder()
 
   config(_configs: fambInputBoxConfigProtocol): void {
+    if(!document.getElementById('famb-input-bg')) throw new Error('Can not config an elementRef that does not exist, make sure your HTML has a tag "<famb-input-box>"')
     this.configs = Object.keys(_configs).length > 0 ? { ...defaultConfigs, ..._configs } : { ...defaultConfigs }    
     document.getElementById('famb-input-bg').style.transition = `${this.configs.animationTime || 600}ms ease`
     document.getElementById('famb-input-box').style.transition = `${this.configs.animationTime || 600}ms ease`

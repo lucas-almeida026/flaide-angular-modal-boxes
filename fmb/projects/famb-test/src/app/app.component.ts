@@ -36,15 +36,7 @@ export class AppComponent implements OnInit {
   }
 
   showProgress(): void {
-    progress.config({
-      progressBoxStyles: {
-        progressBar: {
-          progressValue: {
-            position: 'insideRight',
-          }
-        }
-      }
-    })
+    progress.config({})
     const obsbl = progress.show('Carregando')
     let v = 0
     const interval = setInterval(() => {

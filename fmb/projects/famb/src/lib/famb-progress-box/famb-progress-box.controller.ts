@@ -129,6 +129,7 @@ export class FAMBProgressBoxController {
   private secPlan = false
 
   config(_configs: fambProgressBoxConfigProtocol): void {
+    if(!document.getElementById('famb-progress-bg')) throw new Error('Can not config an elementRef that does not exist, make sure your HTML has a tag "<famb-progress-box>"')
     this.configs = Object.keys(_configs).length > 0 ? { ...defaultConfigs, ..._configs } : { ...defaultConfigs }
     document.getElementById('famb-alert-bg').style.transition = `${this.configs.animationTime || 600}ms ease`
     document.getElementById('famb-alert-box').style.transition = `${this.configs.animationTime || 600}ms ease`
