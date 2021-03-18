@@ -1,8 +1,9 @@
+import { progressEvents } from './famb-progress-box/famb-progress-box.controller';
 import { inputEvents } from './famb-input-box/famb-input-box.controller';
 import { confirmEvents } from './famb-confirm-box/famb-confirm-box.controller';
 import { alertEvents } from "./famb-alert-box/famb-alert-box.controller"
 
-type eventTypes = alertEvents | confirmEvents | inputEvents
+type eventTypes = alertEvents | confirmEvents | inputEvents | progressEvents
 
 export interface Observer {
   event: eventTypes,

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FAMBAlertBoxController, FAMBConfirmBoxController, FAMBInputBoxController } from 'famb';
+import { FAMBAlertBoxController, FAMBConfirmBoxController, FAMBInputBoxController, FAMBProgressBoxController } from 'famb';
 
 const alert = new FAMBAlertBoxController()
 const confirm = new FAMBConfirmBoxController()
 const input = new FAMBInputBoxController()
+const progress = new FAMBProgressBoxController()
 
 @Component({
   selector: 'app-root',
@@ -32,5 +33,25 @@ export class AppComponent implements OnInit {
     input.config({})
     const observable = input.show('asd', 'asd')
     observable.on('send', (e) => console.log('input close', e))
+  }
+
+  showProgress(): void {
+    progress.config({
+      progressBoxStyles: {
+        progressBar: {
+          progressValue: {
+            position: 'insideRight',
+          }
+        }
+      }
+    })
+    const obsbl = progress.show('Carregando')
+    let v = 0
+    const interval = setInterval(() => {
+      progress.update(v+=10)
+      if(v>=100) clearInterval(interval)
+    }, 500)
+    obsbl.on('finish', () => console.log('finish'))
+    obsbl.on('secPlan', () => console.log('secPlan'))
   }
 }
