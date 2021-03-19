@@ -125,10 +125,10 @@ export class FAMBConfirmBoxController {
     }
   }
 
-  show(title: string, description: string, buttons?: {ok: string, cancel: string}): Observable {
-    if(this.configs === undefined) throw new Error('you must config this confirm box first, use <FAMBAlertBoxController>.config()')
+  show(title: string, question: string, buttons?: {ok: string, cancel: string}): Observable {
+    if(this.configs === undefined) throw new Error('You must config this confirm box first, use <FAMBConfigBoxController>.config()')
     document.getElementById('famb-confirm-title').innerText = title
-    document.getElementById('famb-confirm-description').innerText = description
+    document.getElementById('famb-confirm-description').innerText = question
     document.getElementById('famb-confirm-bg').style.display = 'flex'
     if(!this.globalEventRecorder.hasEventListener('main', 'click')){
       this.globalEventRecorder.registerEventListener('main', 'click')

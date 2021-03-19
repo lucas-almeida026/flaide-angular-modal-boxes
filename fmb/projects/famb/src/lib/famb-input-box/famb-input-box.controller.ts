@@ -109,7 +109,7 @@ export class FAMBInputBoxController {
   }
 
   show(title: string, question: string, buttons?: {send: string}): Observable {
-    if(this.configs === undefined) throw new Error('you must config this confirm box first, use <FAMBAlertBoxController>.config()')
+    if(this.configs === undefined) throw new Error('You must config this input box first, use <FAMBInputBoxController>.config()')
     document.getElementById('famb-input-input-input')['value'] = ''
     document.getElementById('famb-input-title').innerText = title
     document.getElementById('famb-input-description').innerText = question

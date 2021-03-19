@@ -95,7 +95,7 @@ export class FAMBAlertBoxController {
   }
 
   show(title: string, description: string, buttons?: {ok: string}): Observable {
-    if(this.configs === undefined) throw new Error('you must config this alert box first, use <FAMBAlertBoxController>.config()')
+    if(this.configs === undefined) throw new Error('You must config this alert box first, use <FAMBAlertBoxController>.config()')
     document.getElementById('famb-alert-title').innerText = title
     document.getElementById('famb-alert-description').innerText = description
     document.getElementById('famb-alert-bg').style.display = 'flex'

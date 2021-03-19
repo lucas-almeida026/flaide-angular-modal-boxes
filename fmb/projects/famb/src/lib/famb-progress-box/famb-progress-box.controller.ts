@@ -141,9 +141,15 @@ export class FAMBProgressBoxController {
   }
 
   show(title: string, buttons?: {secPlan: string}): Observable {
-    if(this.configs === undefined) throw new Error('you must config this alert box first, use <FAMBAlertBoxController>.config()')
+    console.log('show')
+    if(this.secPlan) throw new Error('This application already has a progress bar in process')
+    if(this.configs === undefined) throw new Error('You must config this progress box first, use <FAMBProgressBoxController>.config()')
+    this.secPlan = false
+    
     document.getElementById('famb-progress-title').innerText = title
     document.getElementById('famb-progress-bg').style.display = 'flex'
+    document.getElementById('famb-progress-box').style.display = 'flex'
+
     if(!this.globalEventRecorder.hasEventListener('id', 'click')){
       this.globalEventRecorder.registerEventListener('id', 'click')
       document.getElementById('famb-progress-mainBtn').addEventListener('click', () => {
@@ -155,7 +161,7 @@ export class FAMBProgressBoxController {
     }
     document.getElementById('famb-progress-mainBtn').innerText = buttons?.secPlan|| 'Second Plan'
     
-    setTimeout(() => {
+    setTimeout(() => {      
       document.getElementById('famb-progress-bg').style.zIndex = '1'
       document.getElementById('famb-progress-bg').style.backgroundColor = `rgba(0, 0, 0, .7)`
       document.getElementById('famb-progress-box').style.transform = 'translateY(0px)'
@@ -166,11 +172,13 @@ export class FAMBProgressBoxController {
 
   update(value: number): void {
     if(!this.secPlan){
+      document.getElementById('famb-progress-box').style.display = 'flex'
       document.getElementById('famb-progress-fill').style.width = `${value}%`
       document.getElementById('famb-progress-value').innerText = `${value}%`
     }
     if(value >= 100) setTimeout(() => {
       this.observer.emit('finish')
+      this.secPlan = false
       document.getElementById('famb-progress-fill').style.width = '0px'
       if(this.configs.closeOnFinish){
         this.hide()
@@ -178,7 +186,7 @@ export class FAMBProgressBoxController {
     }, 500)
   }
 
-  hide(): void {
+  hide(): void {    
     document.getElementById('famb-progress-bg').style.backgroundColor = `rgba(0, 0, 0, 0)`
     document.getElementById('famb-progress-box').style.transform = 'translateY(-100%)'
     document.getElementById('famb-progress-box').style.opacity = '0'
