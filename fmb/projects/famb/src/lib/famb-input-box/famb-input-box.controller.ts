@@ -129,7 +129,7 @@ export class FAMBInputBoxController {
     }
     document.getElementById('famb-input-mainBtn').innerText = buttons?.send || 'Send'
     setTimeout(() => {
-      document.getElementById('famb-input-bg').style.zIndex = '1'
+      document.getElementById('famb-input-bg').style.zIndex = '99'
       document.getElementById('famb-input-bg').style.backgroundColor = `rgba(0, 0, 0, .7)`
       document.getElementById('famb-input-box').style.transform = 'translateY(0px)'
       document.getElementById('famb-input-box').style.opacity = '1'

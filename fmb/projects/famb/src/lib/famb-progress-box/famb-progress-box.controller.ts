@@ -162,7 +162,7 @@ export class FAMBProgressBoxController {
     document.getElementById('famb-progress-mainBtn').innerText = buttons?.secPlan|| 'Second Plan'
     
     setTimeout(() => {      
-      document.getElementById('famb-progress-bg').style.zIndex = '1'
+      document.getElementById('famb-progress-bg').style.zIndex = '99'
       document.getElementById('famb-progress-bg').style.backgroundColor = `rgba(0, 0, 0, .7)`
       document.getElementById('famb-progress-box').style.transform = 'translateY(0px)'
       document.getElementById('famb-progress-box').style.opacity = '1'

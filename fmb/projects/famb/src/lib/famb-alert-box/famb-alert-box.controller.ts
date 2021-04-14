@@ -106,7 +106,7 @@ export class FAMBAlertBoxController {
     document.getElementById('famb-alert-mainBtn').innerText = buttons?.ok || 'OK'
     
     setTimeout(() => {
-      document.getElementById('famb-alert-bg').style.zIndex = '1'
+      document.getElementById('famb-alert-bg').style.zIndex = '99'
       document.getElementById('famb-alert-bg').style.backgroundColor = `rgba(0, 0, 0, .7)`
       document.getElementById('famb-alert-box').style.transform = 'translateY(0px)'
       document.getElementById('famb-alert-box').style.opacity = '1'

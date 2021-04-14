@@ -148,7 +148,7 @@ export class FAMBConfirmBoxController {
     document.getElementById('famb-confirm-secBtn').innerText = buttons?.cancel || 'Cancel'
     
     setTimeout(() => {
-      document.getElementById('famb-confirm-bg').style.zIndex = '1'
+      document.getElementById('famb-confirm-bg').style.zIndex = '99'
       document.getElementById('famb-confirm-bg').style.backgroundColor = `rgba(0, 0, 0, .7)`
       document.getElementById('famb-confirm-box').style.transform = 'translateY(0px)'
       document.getElementById('famb-confirm-box').style.opacity = '1'
