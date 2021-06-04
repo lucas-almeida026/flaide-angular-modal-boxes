@@ -1,14 +1,28 @@
-import { FAMBProgressBox } from './famb-progress-box/famb-progress-box.component';
-import { FAMBInputBox } from './famb-input-box/famb-input-box.component';
+import { ProgressBoxComponent } from './components/progress-box/progress-box.component';
+import { InputBoxComponent } from './components/input-box/input-box.component';
+import { ConfirmBoxComponent } from './components/confirm-box/confirm-box.component';
+import { AlertBoxComponent } from './components/alert-box/alert-box.component';
 import { NgModule } from '@angular/core';
-import { FAMBAlertBox } from './famb-alert-box/famb-alert-box.component';
-import { FAMBConfirmBox } from './famb-confirm-box/famb-confirm-box.component';
-
+import { GlobalComponent } from './global/global.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  declarations: [FAMBAlertBox, FAMBConfirmBox, FAMBInputBox, FAMBProgressBox],
-  imports: [
+  declarations: [
+    GlobalComponent, 
+    AlertBoxComponent, 
+    ConfirmBoxComponent, 
+    InputBoxComponent, 
+    ProgressBoxComponent
   ],
-  exports: [FAMBAlertBox, FAMBConfirmBox, FAMBInputBox, FAMBProgressBox]
+  imports: [
+    CommonModule
+  ],
+  exports: [
+    GlobalComponent, 
+    AlertBoxComponent, 
+    ConfirmBoxComponent, 
+    InputBoxComponent, 
+    ProgressBoxComponent
+  ]
 })
 export class FAMBModule { }
