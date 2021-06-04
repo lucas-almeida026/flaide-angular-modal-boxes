@@ -1,8 +1,7 @@
-import { EventListenerRecorder } from "../Utils/EventListenerRecorder";
-import { ConfirmEvents, ConfirmOptions, FAMBAllModalBoxesConfig, IConfirmModal, IReturnableObservable } from "../Utils/FAMB.type";
-import { Observable } from "../Utils/Observable";
-import ObjectEntries from '../Utils/ObjectEntries.js'
-// import ObjectEntries from '../Utils/ObjectEntries.js'
+import { EventListenerRecorder } from "./../Utils/EventListenerRecorder";
+import { ConfirmEvents, ConfirmOptions, FAMBAllModalBoxesConfig, IConfirmModal, IReturnableObservable } from "./../Utils/FAMB.type";
+import { Observable } from "./../Utils/Observable";
+import ObjectEntries from './../Utils/ObjectEntries';
 
 export class ConfirmModalBox implements IConfirmModal{
   private observable = new Observable<ConfirmEvents>();

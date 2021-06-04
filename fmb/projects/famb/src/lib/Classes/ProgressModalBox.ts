@@ -1,7 +1,7 @@
 import { FAMBAllModalBoxesConfig, FAMBProgressBoxConfig, IProgressModal, IReturnableObservable, ProgressEvents, ProgressOptions } from './../Utils/FAMB.type';
-import { Observable } from "../Utils/Observable";
-import { EventListenerRecorder } from "../Utils/EventListenerRecorder";
-import ObjectEntries from '../Utils/ObjectEntries.js';
+import { Observable } from "./../Utils/Observable";
+import { EventListenerRecorder } from "./../Utils/EventListenerRecorder";
+import ObjectEntries from './../Utils/ObjectEntries';
 
 export class ProgressModalBox implements IProgressModal {
   private observable = new Observable<ProgressEvents>();

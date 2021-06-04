@@ -22,7 +22,7 @@ import { CommonModule } from '@angular/common';
     AlertBoxComponent, 
     ConfirmBoxComponent, 
     InputBoxComponent, 
-    ProgressBoxComponent
+    ProgressBoxComponent,    
   ]
 })
 export class FAMBModule { }

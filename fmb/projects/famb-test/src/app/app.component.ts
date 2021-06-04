@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { FAMB } from 'famb';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 // import { FAMBAlertBoxController, FAMBConfirmBoxController, FAMBInputBoxController, FAMBProgressBoxController } from 'famb';
 
 // const alert = new FAMBAlertBoxController()
@@ -11,10 +12,22 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
+
+  constructor(private FAMB: FAMB){
+  }
   
   ngOnInit(): void {
     
+  }
+
+  ngAfterViewInit() {
+    let value = 0   
+    this.FAMB.progress.show('testing progress bar')
+    setInterval(() => {
+      this.FAMB.progress.update(value)
+      value += 10
+    }, 500)
   }
 
   // showAlert(): void {

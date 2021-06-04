@@ -1,10 +1,8 @@
 import { ProgressModalBox } from './Classes/ProgressModalBox';
 import { InputModalBox } from './Classes/InputModalBox';
 import { ConfirmModalBox } from './Classes/ConfirmModalBox';
-import { EventListenerRecorder } from './Utils/EventListenerRecorder';
 import { Injectable } from "@angular/core";
-import { AlertEvents, FAMBAlertBoxConfig, FAMBAllModalBoxesConfig, FAMBConfirmBoxConfig, FAMBGlobalColorsConfig, FAMBInputBoxConfig, FAMBProgressBoxConfig, IAlertModal, IConfirmModal, IInputModal, IProgressModal } from "./Utils/FAMB.type";
-import { Observable } from "./Utils/Observable";
+import { FAMBAlertBoxConfig, FAMBAllModalBoxesConfig, FAMBConfirmBoxConfig, FAMBGlobalColorsConfig, FAMBInputBoxConfig, FAMBProgressBoxConfig } from "./Utils/FAMB.type";
 import { AlertModalBox } from './Classes/AlertModalBox';
 
 interface FAMBGlobal {

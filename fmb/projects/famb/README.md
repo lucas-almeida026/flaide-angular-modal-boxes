@@ -1,8 +1,7 @@
 # FAMB - Flaide Angular Modal Boxes
 
-### FAMB é um pacote de caixas modais para angular, o pacote contém: alert box, confirm box, input box e progress box.
+FAMB é um pacote de caixas modais para angular, o pacote contém: alert box, confirm box, input box e progress box.
 
-### Este README contem _anchor links_ para uma melhor experiência leia este documento através do [git-hub](https://github.com/lucas-almeida026/flaide-angular-modal-boxes/blob/main/README.md 'Open with GitHub')
 
 ## Importando o módulo
 No arquivo `app.module.ts` importe o módule `FAMBModule`: 
@@ -24,9 +23,16 @@ import { FAMBModule } from 'famb';
 //...
 ```
 
-## Renderizando os components
-### Não é necessário utilizar as tags HTML toda vez que for utilizar as caixas modais do pacote FAMB, escreva as tags HTML uma única vez e tenha as caixas modais disponíveis na aplicação inteira.
-No arquivo `app.component.html` declare as caixas modais que irá utilziar em toda a aplicação:
+## Renderizando os componentes
+Você pode usar as caixas modais de maneira global ou importar uma a uma em cada página.
+
+### Usando de maneira global
+No arquivo `app.component.html` declare o componente global:
+```html
+<famb-global></famb-global>
+<router-outlet><router-outlet>
+```
+Ou se prefirir declare apenas as que vai utilizar:
 ```html
 <famb-alert-box></famb-alert-box>
 <famb-confirm-box></famb-confirm-box>
@@ -34,320 +40,306 @@ No arquivo `app.component.html` declare as caixas modais que irá utilziar em to
 <famb-progress-box></famb-progress-box>
 <router-outlet><router-outlet>
 ```
+### Usando de maneira local
+Importe apenas as caixas modais que de sejar no arquivo que desejar, exemplo `my-component.hml`:
+```html
+<famb-alert-box></famb-alert-box>
+```
 
-## Utilizando as caixas modais (ex.: AlertBox):
-Cada modal box possui um "Controller", uma classe de manipulação do elemento, importe o controller referente a caixa que está utilizando para manipula-la
-
-Para usar a modal box primeiro é necessário chamar o método `config()`, que rece um objeto de configuração como parâmetro. Veja mais sobre [Objetos de configuração](#Objetos-de-configuração).
-
-Cada modal box tem seus próprios objetos de configuração, métodos, parâmetros obrigatórios e eventListeners. Clique [aqui](#Detalhando-cada-modal-box) para ver.
-
-### Ex.: Renderizando uma alert box
+## Renderizando uma alert box (ex.: AlertBox):
+No arquivo `.ts` do seu componente import o serviço `FAMB` e chame o método `show()` de `alert` passando as propriedades `title` e `description` (obrigatórias)
 ```typescript
-import { Component } from '@angular/core';
-import { FAMBAlertBoxController } from 'famb';
 //...
-
-const alertController = new FAMBAlertBoxController()
-
-@Component({...})
-export class MyComponent {
-  showAlert(): void {
-    alertController.config({})
-    const observable = alertController.show('Título', 'Descrição da alert box', buttons: {ok: 'Aceito'})
-    observable.on('ok', () => goToNextPage())
-    observable.on('hide', () => console.log('Usuário recusou'))
+import { FAMB } from 'famb';
+//...
+@Component({
+  selector: 'app-meu-componente',
+  templateUrl: './meu-componente.html',
+  styleUrls: ['./meu-componente.scss']
+})
+export class AppComponent implements AfterViewInit {
+  constructor(
+    private FAMB: FAMB
+  ){}
+  ngAfterViewInit() {    
+    this.FAMB.alert.show('message title', 'message description')
   }
 }
 ```
 
+## IMPORTANTE:
+### A caixa modal de barra de progresso possui um método a mais:
+Assim como as outras a caixa modal `<famb-progress-box>` possui os métos `show()` e `hide()`, mas além deles ela possui o método `update()` que é utilizado para atualizar o valor percentual da parra de progresso.
+Exemplo:
+```typescript
+ngAfterViewInit() {
+  let value = 0   
+  this.FAMB.progress.show('testing progress bar')
+  setInterval(() => {
+    this.FAMB.progress.update(value)
+    value += 10
+  }, 500)
+}
+```
+Resultado:
+[![gv-vid.gif](https://i.postimg.cc/N09YKMy6/gv-vid.gif)](https://postimg.cc/rdk7bqNs)
+<br>
+
+## Configurações possíveis (geral)
+Configure suas caixas modais de maneira simples utilizando o método `configAllModalBoxes`.
+Clique <a href="#detalhando-cada-modal-box">aqui</a> para ver as configurções expecíficas de cada modal box
+IMPORTANTE: Defina as cofigurações das caixas modais antes de renderiza-las na tela!
+```typescript
+//Descrevendo o método FAMB.configAllModalBoxes(<obj>)
+type configAllModalBoxes = (obj: GeneralConfigObj) => void
+type GeneralConfigObj = {
+  animationTime?: number, //Tempo de animação de todas as caixas modais
+  bgTransparencyRate?: string, //Taxa de transparência do fundo - de 0 a 1
+  hideOnClickBackground?: boolean, //Fecha a caixa modal se o usuário clicar no fundo - padrão: false
+  styles?: {
+    box?: CSS.StandardProperties //Estiliza a box de acordo com as propriedades css atribuidas
+  }
+}
+```
+
+## Definindo valores de cores globais
+Defina "constantes" que armazenam códigos hexadecimais de cores.
+IMPORTANTE: Defina as cofigurações de cores antes de renderizar as caixas modais na tela!
+```typescript
+ngAfterViewInit() {    
+  this.FAMB.configGlobalColors({
+    primaryColor: '#f0f',
+    transparentPrimaryColor: '#f0fa',
+    secondColor: '#ffffff',
+    transparentWhite: '#ffffffaa'
+  })
+  //...
+}
+```
+
+## Usando os valores de cores globais
+Para referenciar uma cor definida globalmente basta escrever o nome dela entre aspas no valor da propriedade css.
+```typescript
+ngAfterViewInit() {    
+  this.FAMB.configGlobalColors({
+    primaryColor: '#f0f',
+    semiBlack: '#3b3b3b',
+  })
+  this.FAMB.configAlertBox({
+    styles: {
+      box: {
+        backgroundColor: 'primaryColor'
+      },
+      title: {
+        color: 'semiBlack'
+      }
+    }
+  })
+  //...
+}
+```
+
+## Observando eventos
+O método `show()` de todas as caixas modais retorna um objeto do tipo `Observable`, para se observar o objeto utilize o método `on(<event>)` e passe o `evento: string`.
+```typescript
+this.FAMB.alert.show('message title', 'message description').on('close', () => console.log('alert closed'))
+```
+Existem duas maneiras de observar mais de um evento ao mesmo tempo
+1. Salvando o objeto observável em uma váriável:
+  ```typescript
+    const observable = this.FAMB.alert.show('message title', 'message description')
+    observable.on('close', () => console.log('alert closed'))
+    observable.on('ok', () => console.log('ok'))
+  ```
+2. Encadeando inscrições:
+  ```typescript
+  this.FAMB.alert.show('message title', 'message description')
+    .on('close', () => console.log('alert closed'))
+    .on('ok', () => console.log('ok'))
+  ```
+
+
 ## Detalhando cada modal box
-### Métodos e parâmetros obrigatórios:
-Todas as modal boxes possuem os métodos `config()`, `show()`, `hide()`.
-*Config* serve para configurar o objeto passando informações de comportamento e estilos, *Show* é para renderizar o componente na tela e *Hide* para esconder o componente da tela.
-O método `show()` recebe diferêntes parâmetros obrigatórios dependendo de qual modal box ele se refere, veja na lista abaixo. O método `Show()` retorna um `Observable` que por sua vez possue os métodos `emit()`, `emitValue()`, `on()` e `unsubscribe()`. O método `on()` funciona como um event listener, utilize-o para execular as _callbacks_. Veja [os eventos disponíveis para cada modal box](#Eventos-de-cada-modal-box).
+Cada modal box possiu parâmetros, funções, eventos observáveis, interface de modificações e método de configuração específicos.
+Veja a seguir a descrição de todas estas propriedades agrupadas por caixa modal.
+Índice: <a href="#alertbox">AlertBox</a> - <a href="#confirmbox">ConfirmBox</a> - <a href="#inputbox">InputBox</a> - <a href="#progressbox">ProgressBox</a>
 
 ### AlertBox:
+#### Método de configuração e interface de modificações:
 ```typescript
-alertController.show(title: string, description: string, buttons?: {
-  ok?: string
+type FAMBAlertBoxConfig = {
+  animationTime?: number,
+  bgTransparencyRate?: string,
+  hideOnClickBackground?: boolean,
+  styles?: {
+    box?: CSS.StandardProperties,
+    title?: CSS.StandardProperties,
+    description?: CSS.StandardProperties,
+    okButton?: CSS.StandardProperties,
+  }
+}
+type FAMB.configAlertBox = (obj: FAMBAlertBoxConfig) => void
+//Exemplo:
+this.FAMB.configAlertBox({
+  animationTime: 300,
+  hideOnClickBackground: true,
+  styles: {
+    box: {
+      backgroundColor: 'black'
+    }
+  }
 })
 ```
+#### Funções e parâmetros:
+```typescript
+type AlertOptions = {okButtonText?: string}
+type IAlertModal = {
+  show: (title: string, description: string, options?: AlertOptions) => IReturnableObservable<AlertEvents>,
+  hide: () => void
+}
+```
+#### Eventos observáveis
+```typescript
+type AlertEvents = 'hide' | 'close' | 'ok'
+```
+* hide: emitido ao fechar caixa modal (inclui tempo de animação)
+* close: emitido fechar caixa modal (NÃO inclui tempo de animação)
+* ok: emitido ao clicar no botão OK
+
+
 ### ConfirmBox:
+#### Método de configuração e interface de modificações:
 ```typescript
-confirmController.show(title: string, question: string, buttons?: {
-  ok: string,
-  cancel: string
+type FAMBConfirmBoxConfig = {
+  animationTime?: number,
+  bgTransparencyRate?: string,
+  hideOnClickBackground?: boolean,
+  styles?: {
+    box?: CSS.StandardProperties,
+    title?: CSS.StandardProperties,
+    question?: CSS.StandardProperties,
+    okButton?: CSS.StandardProperties,
+    cancelButton?: CSS.StandardProperties,
+  }
+}
+type FAMB.configConfirmBox = (obj: FAMBConfirmBoxConfig) => void
+//Exemplo:
+this.FAMB.configConfirmBox({
+  animationTime: 300,
+  styles: {
+    box: {
+      backgroundColor: 'black'
+    }
+  }
 })
 ```
+#### Funções e parâmetros:
+```typescript
+type ConfirmOptions = {okButtonText?: string, cancelButtonText: string}
+type IConfirmModal = {
+  show: (title: string, description: string) => IReturnableObservable<ConfirmEvents>,
+  hide: () => void
+}
+```
+#### Eventos observáveis
+```typescript
+type AlertEvents = 'hide' | 'close' | 'cancel' | 'ok'
+```
+* hide: emitido ao fechar caixa modal (inclui tempo de animação)
+* close: emitido fechar caixa modal (NÃO inclui tempo de animação)
+* ok: emitido ao clicar no botão OK
+* cancel: emitido ao clicar no botão CANCEL
+
+
 ### InputBox:
+#### Método de configuração e interface de modificações:
 ```typescript
-alertController.show(title: string, question: string, buttons?: {
-  send: string
+type FAMBInputBoxConfig = {
+  animationTime?: number,
+  bgTransparencyRate?: string,
+  hideOnClickBackground?: boolean,
+  styles?: {
+    box?: CSS.StandardProperties,
+    title?: CSS.StandardProperties,
+    description?: CSS.StandardProperties,
+    sendButton?: CSS.StandardProperties,
+    input?: CSS.StandardProperties,
+  }
+}
+type FAMB.configInputBox = (obj: FAMBInputBoxConfig) => void
+//Exemplo:
+this.FAMB.configInputBox({
+  animationTime: 300,
+  styles: {
+    box: {
+      backgroundColor: 'black'
+    }
+  }
 })
 ```
-### ProgressBox:
-Progress box possui um método a mais `update()` que atualiza o valor da barra de progresso e recebe um valor numérico obrigatório.
+#### Funções e parâmetros:
 ```typescript
-alertController.show(title: string, buttons?: {
-  secPlan: string
-})
-alertController.update(value: number)
+type InputOptions = {sendButtonText?: string, inputPlaceholder?: string, pressingEnterClicksTheButton?: boolean}
+type IInputModal = {
+  show: (title: string, description: string, options?: InputOptions) => IReturnableObservable<InputEvents>,
+  hide: () => void
+}}
 ```
-
-## Eventos de cada modal box:
-### AlertBox:
+#### Eventos observáveis
 ```typescript
-'hide' | 'close' | 'ok'
- ```
-* hide: emitido depois que a modal box é fechada (inclui tempo de animação)
-* close: emitido depois que a modal box é fechada (NÃO inclui tempo de animação)
-* ok: emitido depois que o usuário clicar no botão OK
-
-<br>
-
-### ConfirmBox:
-```typescript
-'hide' | 'close' | 'cancel' | 'ok'
- ```
-* hide: emitido depois que a modal box é fechada (inclui tempo de animação)
-* close: emitido depois que a modal box é fechada (NÃO inclui tempo de animação)
-* ok: emitido depois que o usuário clicar no botão OK
-* cancel: emitido depois que o usuário clicar no botão CANCEL
-
-<br>
-
-### InputBox:
-```typescript
-'hide' | 'close' | 'send' | 'keyup' | 'keypress' | 'keydown'
+type InputEvents = 'hide' | 'close' | 'send' | 'keyup' | 'keypress' | 'keydown'
 ```
-* hide: emitido depois que a modal box é fechada (inclui tempo de animação)
-* close: emitido depois que a modal box é fechada (NÃO inclui tempo de animação)
-* send: emitido depois que o usuário clicar no botão SEND
+* hide: emitido ao fechar caixa modal (inclui tempo de animação)
+* close: emitido fechar caixa modal (NÃO inclui tempo de animação)
+* send: emitido ao clicar no botão SEND
 * keyup: emitido em todo evento _keyup_ do input
 * keypress: emitido em todo evento _keypress_ do input
 * keydown: emitido em todo evento _keydown_ do input
 
-<br>
+
 
 ### ProgressBox:
+#### Método de configuração e interface de modificações:
 ```typescript
-'hide' | 'close' | 'secPlan' | 'finish'
- ```
-* hide: emitido depois que a modal box é fechada (inclui tempo de animação)
-* close: emitido depois que a modal box é fechada (NÃO inclui tempo de animação)
-* secPlan: emitido depois que o usuário clicar no botão SECOND PLAN
-* finish: Emitido quando a barra de progresso chegar em 100%
-
-
-### Objetos de configuração:
-Objetos de configuração são opcionais e definem alguns valores para as modal boxes, além de permitir a estilização dos elementos via typescript.
-### AlertBox:
-```typescript
-interface AlertConfigs {
+type FAMBProgressBoxConfig = {
   animationTime?: number,
   bgTransparencyRate?: string,
   hideOnClickBackground?: boolean,
-  alertBoxStyles?: {
-    width?: string,
-    maxWidth?: string,
-    minHeight?: string,
-    backgroundColor?: string,
-    border?: string,
-    borderRadius?: string,
-    title?: {
-      fontSize?: string,
-      color?: string,
-      textAlign?: textAlign,
-    }
-    description?: {
-      fontSize?: string,
-      color?: string,
-      minHeight?: string,
-      textAlign?: 'center' | 'left' | 'right' | 'justify',
-    }
-    okButton?: {
-      width?: string,
-      maxWidth?: string,
-      padding?: string,
-      fontSize?: string,
-      color?: string,
-      backgroundColor?: string,
-      border?: string,
-      borderRadius?: string,
-      opacity?: string,
-      hover?: {
-        color?: string,
-        backgroundColor?: string,
-        opacity?: string
-      }
-    }
+  closeOnFinish?: boolean,
+  styles?: {
+    box?: CSS.StandardProperties,
+    bar?: CSS.StandardProperties,
+    fill?: CSS.StandardProperties,
+    value?: CSS.StandardProperties, // Tutilize 'insideLeft' | 'insideRight' | 'bellowLeft' | 'bellowRight' para determinar a posição da label
+    title?: CSS.StandardProperties,
+    secondPlanButton?: CSS.StandardProperties,
   }
 }
+type FAMB.configProgressBox = (obj: FAMBProgressBoxConfig) => void
+//Exemplo:
+this.FAMB.configProgressBox({
+  animationTime: 300,
+  styles: {
+    box: {
+      backgroundColor: 'black'
+    }
+  }
+})
 ```
-### ConfirmBox:
+#### Funções e parâmetros:
 ```typescript
-interface ConfirmConfigs {
-  animationTime?: number,
-  bgTransparencyRate?: string,
-  hideOnClickBackground?: boolean,
-  confirmBoxStyles?: {
-    width?: string,
-    maxWidth?: string,
-    minHeight?: string,
-    backgroundColor?: string,
-    border?: string,
-    borderRadius?: string,
-    title?: {
-      fontSize?: string,
-      color?: string,
-      textAlign?: textAlign,
-    },
-    question?: {
-      fontSize?: string,
-      color?: string,
-      minHeight?: string,
-      textAlign?: 'center' | 'left' | 'right' | 'justify',
-    }
-    okButton?: {
-      width?: string,
-      maxWidth?: string,
-      padding?: string,
-      fontSize?: string,
-      color?: string,
-      backgroundColor?: string,
-      border?: string,
-      borderRadius?: string,
-      opacity?: string,
-      hover?: {
-        color?: string,
-        backgroundColor?: string,
-        opacity?: string
-      }
-    }
-    cancelButton?: {
-      width?: string,
-      maxWidth?: string,
-      padding?: string,
-      fontSize?: string,
-      color?: string,
-      backgroundColor?: string,
-      border?: string,
-      borderRadius?: string,
-      opacity?: string,
-      hover?: {
-        color?: string,
-        backgroundColor?: string,
-        opacity?: string
-      }
-    }
-  }
+type ProgressOptions = {secondPlanButtonText?: string, labelValuePosition?: 'insideLeft' | 'insideRight' | 'bellowLeft' | 'bellowRight'}
+type IProgressModal = {
+  show: (title: string, options?: ProgressOptions) => IReturnableObservable<ProgressEvents>,
+  hide: () => void,
+  update: (value: number) => void
 }
 ```
-
-### InputBox:
+#### Eventos observáveis
 ```typescript
-interface InputConfigs {
-  animationTime?: number,
-  bgTransparencyRate?: string,
-  hideOnClickBackground?: boolean,
-  inputBoxStyles?: {
-    width?: string,
-    maxWidth?: string,
-    minHeight?: string,
-    backgroundColor?: string,
-    border?: string,
-    borderRadius?: string,
-    title?: {
-      fontSize?: string,
-      color?: string,
-      textAlign?: textAlign,
-    }
-    question?: {
-      fontSize?: string,
-      color?: string,
-      minHeight?: string,
-      textAlign?: 'center' | 'left' | 'right' | 'justify',
-    }
-    sendButton?: {
-      width?: string,
-      maxWidth?: string,
-      padding?: string,
-      fontSize?: string,
-      color?: string,
-      backgroundColor?: string,
-      border?: string,
-      borderRadius?: string,
-      opacity?: string,
-      hover?: {
-        color?: string,
-        backgroundColor?: string,
-        opacity?: string
-      }
-    }
-    input?: {
-      width?: string,
-      maxWidth?: string,
-      padding?: string,
-      color?: string,
-      fontSize?: string,
-      border?: string,
-      borderRadius?: string,
-      placeholderText?: string,
-    }
-  }
-}
+type ProgressEvents = 'hide' | 'close' | 'secondPlan' | 'finish'
 ```
-### ProgressBox: 
-```typescript
-interface ProgressConfigs {
-  animationTime?: number,
-  bgTransparencyRate?: string,
-  hideOnClickBackground?: boolean,
-  progressBoxStyles?: {
-    width?: string,
-    maxWidth?: string,
-    minHeight?: string,
-    backgroundColor?: string,
-    border?: string,
-    borderRadius?: string,
-    title?: {
-      fontSize?: string,
-      color?: string,
-      textAlign?: textAlign,
-    }
-    progressBar?: {
-      width?: string,
-      maxWidth?: string,
-      height?: string,
-      border?: string,
-      progressFill?:{
-        backgroundColor?: string,
-        height?: string,
-      },
-      progressValue?:{
-        fontSize?: string
-        position?: 'insideLeft' | 'insideRight' | 'bellowLeft' | 'bellowRight',
-        backgroudColor?: string,
-        color?: string,
-      }
-    }
-    secPlanBtn?: {
-      width?: string,
-      maxWidth?: string,
-      padding?: string,
-      fontSize?: string,
-      color?: string,
-      backgroundColor?: string,
-      border?: string,
-      borderRadius?: string,
-      opacity?: string,
-      hover?: {
-        color?: string,
-        backgroundColor?: string,
-        opacity?: string
-      }
-    }
-  }
-}
-```
+* hide: emitido ao fechar caixa modal (inclui tempo de animação)
+* close: emitido fechar caixa modal (NÃO inclui tempo de animação)
+* secondPlan: emitido so clicar no botão SECOND PLAN
+* finish: Emitido quando a barra de progresso chega em 100%

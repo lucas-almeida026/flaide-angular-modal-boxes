@@ -1,8 +1,8 @@
 import { AlertOptions, IReturnableObservable } from './../Utils/FAMB.type';
-import { EventListenerRecorder } from "../Utils/EventListenerRecorder";
-import { AlertEvents, FAMBAllModalBoxesConfig, IAlertModal } from "../Utils/FAMB.type";
-import { Observable } from "../Utils/Observable";
-import ObjectEntries from '../Utils/ObjectEntries.js'
+import { EventListenerRecorder } from "./../Utils/EventListenerRecorder";
+import { AlertEvents, FAMBAllModalBoxesConfig, IAlertModal } from "./../Utils/FAMB.type";
+import { Observable } from "./../Utils/Observable";
+import ObjectEntries from './../Utils/ObjectEntries';
 
 export class AlertModalBox implements IAlertModal{
 

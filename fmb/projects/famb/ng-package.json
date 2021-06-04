@@ -3,5 +3,8 @@
   "dest": "../../dist/famb",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "allowedNonPeerDependencies": [
+    "csstype"
+  ]
 }

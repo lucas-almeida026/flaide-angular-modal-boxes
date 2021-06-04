@@ -1,7 +1,7 @@
 import { FAMBAllModalBoxesConfig, IInputModal, InputEvents, InputOptions, IReturnableObservable } from './../Utils/FAMB.type';
-import { Observable } from "../Utils/Observable";
-import { EventListenerRecorder } from "../Utils/EventListenerRecorder";
-import ObjectEntries from '../Utils/ObjectEntries.js';
+import { Observable } from "./../Utils/Observable";
+import { EventListenerRecorder } from "./../Utils/EventListenerRecorder";
+import ObjectEntries from './../Utils/ObjectEntries';
 
 export class InputModalBox implements IInputModal{
   private observable = new Observable<InputEvents>();
